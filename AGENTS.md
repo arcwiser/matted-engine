@@ -114,12 +114,17 @@ WHEN to commit+push:
 - right after you fix a broken build
 - at minimum: every ~30 minutes of active coding
 
-HOW (use the helper):
+HOW (use the helper - STAGE ONLY YOUR OWN FILES):
 
-    scripts\push.bat "[AgentX][TASK-N] one-line summary of what changed"
+    scripts\push.bat "[AgentX][TASK-N] one-line summary" path\to\your\file1 path\to\your\file2 ...
 
-That stages everything, commits, and pushes to `origin main`. Equivalent manual
-sequence: `git add -A` -> `git commit -m "..."` -> `git push`.
+- Pass the exact paths YOU changed. NEVER stage another agent's files
+  (`git add -A` across the whole tree is FORBIDDEN - it sweeps up other
+  agents' in-flight work into your commit).
+- All commits go through the human's git credentials (github.com/arcwiser).
+  Do NOT run `gh auth login`, do NOT change the remote, do NOT create branches.
+- Issues/bugs in your own area: post them in `#build` or `#general` tagged
+  `[ISSUE]` (GitHub issue tracker is not agent-authenticated yet).
 
 RULES:
 1. NEVER force-push to `main`. If your push is rejected: `git pull --rebase`,
