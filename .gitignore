@@ -3,6 +3,9 @@ build/
 .comms/
 *.bmp
 *.obj
+# ...but keep mesh SOURCE files in asset data dirs (validated by tools/assets)
+!tools/assets/fixtures/*.obj
+!assets/test/*.obj
 *.pdb
 *.ilk
 .vs/
