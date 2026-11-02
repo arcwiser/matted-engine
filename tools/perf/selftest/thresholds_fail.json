@@ -1,0 +1,1 @@
+{"_doc": "deliberately tiny limits to prove the FAIL path", "render": {"p99_ms": 5.0}, "physics": {"p99_ms": 2.0}}

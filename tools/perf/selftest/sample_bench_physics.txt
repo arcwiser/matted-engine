@@ -1,0 +1,4 @@
+Matted Engine bench - physics suite
+stepping 120 frames, 10k bodies...
+BENCH physics p99_ms=3.10 mean_ms=2.20 bodies=10000 contacts=45000 steps=120
+islands: 812, sleeping: 6204

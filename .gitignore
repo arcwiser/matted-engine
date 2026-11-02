@@ -1,0 +1,9 @@
+# Matted Engine
+build/
+.comms/
+*.bmp
+*.obj
+*.pdb
+*.ilk
+.vs/
+*.user

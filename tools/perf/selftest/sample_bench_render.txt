@@ -1,0 +1,2 @@
+BENCH render p99_ms=7.42 mean_ms=5.10 fps=196.2 instances=1,000,000 culled=812,345 draws=1,200
+render summary: 1,000,000 instances, 1,200 draw batches

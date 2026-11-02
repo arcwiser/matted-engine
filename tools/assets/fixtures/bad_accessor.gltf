@@ -1,0 +1,105 @@
+{
+ "asset": {
+  "version": "2.0",
+  "generator": "matted-fixture-gen"
+ },
+ "buffers": [
+  {
+   "byteLength": 328,
+   "uri": "data:application/octet-stream;base64,AAADAAIAAAACAAEABAAFAAYABAAGAAcAAAABAAUAAAAFAAQAAgADAAcAAgAHAAYAAQACAAYAAQAGAAUAAAAEAAcAAAAHAAMAAACAvwAAgL8AAIC/AACAPwAAgL8AAIC/AACAPwAAgD8AAIC/AACAvwAAgD8AAIC/AACAvwAAgL8AAIA/AACAPwAAgL8AAIA/AACAPwAAgD8AAIA/AACAvwAAgD8AAIA/AAAAAAAAgD8AAAAAAAAAAAAAgD8AAAAAAAAAAAAAgD8AAAAAAAAAAAAAgD8AAAAAAAAAAAAAgD8AAAAAAAAAAAAAgD8AAAAAAAAAAAAAgD8AAAAAAAAAAAAAgD8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=="
+  }
+ ],
+ "bufferViews": [
+  {
+   "buffer": 0,
+   "byteOffset": 0,
+   "byteLength": 72
+  },
+  {
+   "buffer": 0,
+   "byteOffset": 72,
+   "byteLength": 96
+  },
+  {
+   "buffer": 0,
+   "byteOffset": 168,
+   "byteLength": 96
+  },
+  {
+   "buffer": 0,
+   "byteOffset": 264,
+   "byteLength": 64
+  }
+ ],
+ "accessors": [
+  {
+   "bufferView": 0,
+   "componentType": 5123,
+   "count": 36,
+   "type": "SCALAR",
+   "min": [
+    0
+   ],
+   "max": [
+    7
+   ]
+  },
+  {
+   "bufferView": 1,
+   "componentType": 5126,
+   "count": 8,
+   "type": "VEC3",
+   "min": [
+    -1.0,
+    -1.0,
+    -1.0
+   ],
+   "max": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "bufferView": 2,
+   "componentType": 5126,
+   "count": 8,
+   "type": "VEC3"
+  },
+  {
+   "bufferView": 3,
+   "componentType": 5126,
+   "count": 8,
+   "type": "VEC2"
+  }
+ ],
+ "meshes": [
+  {
+   "primitives": [
+    {
+     "attributes": {
+      "POSITION": 99,
+      "NORMAL": 2,
+      "TEXCOORD_0": 3
+     },
+     "indices": 99,
+     "mode": 4
+    }
+   ]
+  }
+ ],
+ "scenes": [
+  {
+   "nodes": [
+    0
+   ]
+  }
+ ],
+ "nodes": [
+  {
+   "mesh": 0,
+   "name": "cube"
+  }
+ ],
+ "scene": 0
+}

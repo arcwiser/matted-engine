@@ -1,0 +1,10 @@
+[info] frame 100 report_top:
+  prof render_queue.cull        1.234 ms  (512 calls)
+  prof render_queue.batch       0.410 ms  (1 calls)
+  prof raster.tiles             3.500 ms  (64 calls)
+  prof physics.broadphase       0.871 ms  (120 calls)
+  prof physics.solve            1.102 ms  (120 calls)
+  prof render_queue.cull        1.512 ms  (512 calls)
+  prof raster.tiles             4.100 ms  (64 calls)
+  prof physics.broadphase       0.902 ms  (120 calls)
+  prof physics.solve            1.250 ms  (120 calls)

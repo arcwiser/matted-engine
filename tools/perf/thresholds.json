@@ -1,0 +1,12 @@
+{
+  "_doc": [
+    "Matted Engine perf thresholds (TASK-19).",
+    "Values are UPPER LIMITS compared against the MEDIAN across runs for the",
+    "named metric. A metric missing for a suite is not gated. Units match what",
+    "bench.exe prints: *_ms are milliseconds per frame/step, counts are absolute.",
+    "Start conservative, tighten after the first real bench.exe numbers land.",
+    "A FAIL means: post to #build per AGENTS.md rule 6."
+  ],
+  "render":  { "p99_ms": 16.7, "mean_ms": 12.0 },
+  "physics": { "p99_ms": 10.0, "mean_ms": 8.0 }
+}
