@@ -41,8 +41,8 @@ EXIT_USAGE = 2
 
 GLB_MAGIC = b"glTF"
 GLB_VERSION = 2
-CHUNK_JSON = 0x4E4F534A  # 'JSON'
-CHUNK_BIN = 0x004E4942  # 'BIN\0'
+CHUNK_JSON = b"JSON"
+CHUNK_BIN = b"BIN\0"
 
 # glTF componentType -> (struct format char, byte size)
 _COMPONENTS = {
@@ -524,7 +524,18 @@ def selftest() -> int:
             print(f"selftest PASS: {name} "
                   f"({n_err} errors, {n_warn} warnings, "
                   f"{tris} tris, {verts} verts)")
-    print(f"selftest: {len(cases) - failures}/{len(cases)} fixtures behaved "
+
+    # manifest mode: example manifest must pass with matching counts
+    mrep = Report(fx / "manifest.example.json")
+    manifest_ok = validate_manifest(fx / "manifest.example.json", mrep)
+    if manifest_ok and not mrep.has_errors:
+        print("selftest PASS: manifest.example.json (3 entries, counts match)")
+    else:
+        failures += 1
+        print("selftest FAIL: manifest.example.json")
+        mrep.print()
+
+    print(f"selftest: {len(cases) + 1 - failures}/{len(cases) + 1} checks behaved "
           f"as expected")
     return EXIT_INVALID if failures else EXIT_OK
 

@@ -16,6 +16,7 @@ Re-run any time: python tools/assets/make_fixtures.py
 
 from __future__ import annotations
 
+import base64
 import json
 import struct
 from pathlib import Path
@@ -44,25 +45,23 @@ def write_obj(name: str, face_override=None) -> None:
     lines += [f"vt {i / 3.0:.4f} {j / 2.0:.4f}" for i in range(4) for j in range(3)]
     lines += [f"vn {x} {y} {z}" for x, y, z in CUBE_N]
     lines.append("usemtl none")
-    for f in range(6):
-        base = f * 4
+    for f, (a, b, c, d) in enumerate(CUBE_QUADS):
+        n = f + 1  # 1-based normal index (faces match vn order)
         if face_override is not None and f == 0:
-            lines.append(face_override(1))
+            lines.append(face_override(n))
             continue
-        a, b, c, d = CUBE_QUADS[f]
-        n = f + 1
-        lines.append(f"f {a + 1}/1/{n} {b + 1}/2/{n} {c + 1}/3/{n} {d + 1}/4/{n}")
+        for tri in ((a, b, c), (a, c, d)):
+            lines.append(f"f {tri[0] + 1}/1/{n} {tri[1] + 1}/2/{n} "
+                         f"{tri[2] + 1}/3/{n}")
     (FX / name).write_text("\n".join(lines) + "\n", encoding="ascii")
 
 
 def gltf_cube_document() -> dict:
     idx = cube_indices()
     positions = [c for v in CUBE_V for c in v]
-    normals = [c for q in CUBE_QUADS for c in CUBE_N[CUBE_QUADS.index(q)]] * 1
-    # per-vertex normals: reuse face normals is wrong for shared verts; fixtures
-    # only validate structure, so give each vertex a stable normal
-    normals = [c for v in CUBE_V for c in (0.0, 1.0, 0.0)]
-    uvs = [c for v in CUBE_V for c in (0.0, 0.0)]
+    # fixtures only validate structure: give each vertex a stable normal + uv
+    normals = [c for _ in CUBE_V for c in (0.0, 1.0, 0.0)]
+    uvs = [c for _ in CUBE_V for c in (0.0, 0.0)]
     bin_data = b"".join([
         struct.pack(f"<{len(idx)}H", *idx),
         struct.pack(f"<{len(positions)}f", *positions),
@@ -106,7 +105,7 @@ def gltf_cube_document() -> dict:
 
 def write_gltf(name: str, doc: dict, bin_data: bytes) -> None:
     uri = "data:application/octet-stream;base64," + \
-        __import__("base64").b64encode(bin_data).decode("ascii")
+        base64.b64encode(bin_data).decode("ascii")
     doc = dict(doc)
     doc["buffers"] = [{"byteLength": len(bin_data), "uri": uri}]
     (FX / name).write_text(json.dumps(doc, indent=1), encoding="ascii")

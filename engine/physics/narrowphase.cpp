@@ -164,21 +164,22 @@ static void face_manifold(const Body& ref, const Body& inc,
     const int ru = (rni + 1) % 3, rv = (rni + 2) % 3;
     const int iu = (ini + 1) % 3, iv = (ini + 2) % 3;
 
-    const vec3 ref_fc = ref.pos + ref_normal * rh[rni];
+    const vec3 ref_fc = ref.pos + ref_normal * comp(rh, rni);
 
-    const vec3 inc_fc = inc.pos + inc_normal * ih[ini];
+    const vec3 inc_fc = inc.pos + inc_normal * comp(ih, ini);
     // incident face quad
     ClipVert poly[8];
     int npoly = 0;
-    const vec3 iu_ax = iax[iu] * ih[iu];
-    const vec3 iv_ax = iax[iv] * ih[iv];    poly[npoly++] = { inc_fc - iu_ax - iv_ax, 0 };
+    const vec3 iu_ax = iax[iu] * comp(ih, iu);
+    const vec3 iv_ax = iax[iv] * comp(ih, iv);
+    poly[npoly++] = { inc_fc - iu_ax - iv_ax, 0 };
     poly[npoly++] = { inc_fc + iu_ax - iv_ax, 1 };
     poly[npoly++] = { inc_fc + iu_ax + iv_ax, 2 };
     poly[npoly++] = { inc_fc - iu_ax + iv_ax, 3 };
 
     // clip against the 4 side planes of the reference face
     ClipVert tmp[8];
-    const float ru_h = rh[ru], rv_h = rh[rv];
+    const float ru_h = comp(rh, ru), rv_h = comp(rh, rv);
     npoly = clip_poly( rax[ru],  dot(rax[ru], ref_fc) + ru_h, poly, npoly, tmp); if (!npoly) return;
     npoly = clip_poly(-rax[ru], -dot(rax[ru], ref_fc) + ru_h, poly, npoly, tmp); if (!npoly) return;
     npoly = clip_poly( rax[rv],  dot(rax[rv], ref_fc) + rv_h, poly, npoly, tmp); if (!npoly) return;
@@ -227,7 +228,7 @@ static void collide_box_box(const Body& A, const Body& B, Manifold& m) {
         const float rb = std::fabs(dot(Aax[i], Bax[0])) * hb.x +
                          std::fabs(dot(Aax[i], Bax[1])) * hb.y +
                          std::fabs(dot(Aax[i], Bax[2])) * hb.z;
-        const float sep = std::fabs(s) - (ha[i] + rb);
+        const float sep = std::fabs(s) - (comp(ha, i) + rb);
         if (sep > 0) return;
         if (sep > best_sep) { best_sep = sep; kind = 0; bi = i; axis = Aax[i] * (s >= 0 ? 1.0f : -1.0f); }
     }
@@ -237,7 +238,7 @@ static void collide_box_box(const Body& A, const Body& B, Manifold& m) {
         const float ra = std::fabs(dot(Aax[0], Bax[j])) * ha.x +
                          std::fabs(dot(Aax[1], Bax[j])) * ha.y +
                          std::fabs(dot(Aax[2], Bax[j])) * ha.z;
-        const float sep = std::fabs(s) - (hb[j] + ra);
+        const float sep = std::fabs(s) - (comp(hb, j) + ra);
         if (sep > 0) return;
         if (sep > best_sep) { best_sep = sep; kind = 1; bj = j; axis = Bax[j] * (s >= 0 ? 1.0f : -1.0f); }
     }

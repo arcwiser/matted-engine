@@ -1,9 +1,27 @@
 // Matted Engine - memory allocators: linear arena + frame scratch
 #pragma once
+#include <cstdlib>
 #include <vector>
 #include "engine/core/mtt_types.h"
 
 namespace mtt::mem {
+
+namespace detail {
+inline void* aligned_alloc64(size_t bytes) {
+#ifdef _WIN32
+    return ::_aligned_malloc(bytes, 64);
+#else
+    return ::std::aligned_alloc(64, (bytes + 63) & ~size_t(63));
+#endif
+}
+inline void aligned_free64(void* p) {
+#ifdef _WIN32
+    ::_aligned_free(p);
+#else
+    ::std::free(p);
+#endif
+}
+} // namespace detail
 
 // Monotonic arena made of chained blocks. O(1) bump allocation, bulk reset.
 // Not thread-safe by itself; grab a per-thread Scratch for transient work.
@@ -16,7 +34,7 @@ public:
         size = (size + align - 1) & ~(align - 1);
         if (blocks_.empty() || used_ + size > blocks_.back().size) {
             size_t bs = size > block_size_ ? size : block_size_;
-            blocks_.push_back(Block{ new (std::align_val_t(64)) u8[bs], bs });
+            blocks_.push_back(Block{ static_cast<u8*>(detail::aligned_alloc64(bs)), bs });
             used_ = 0;
         }
         u8* p = blocks_.back().data + used_;
@@ -32,7 +50,7 @@ public:
         // keep the largest block, drop the rest
         if (blocks_.size() > 1) {
             for (size_t i = 0; i + 1 < blocks_.size(); ++i) {
-                operator delete[] (blocks_[i].data, std::align_val_t(64));
+                detail::aligned_free64(blocks_[i].data);
             }
             Block last = blocks_.back();
             blocks_.clear();
@@ -41,7 +59,7 @@ public:
         used_ = 0;
     }
     void free_all() {
-        for (auto& b : blocks_) operator delete[] (b.data, std::align_val_t(64));
+        for (auto& b : blocks_) detail::aligned_free64(b.data);
         blocks_.clear();
         used_ = 0;
     }
